@@ -1,0 +1,75 @@
+---
+- hosts: moodle
+  gather_facts: false
+  become: true
+
+  vars_files:
+  - vars.yml
+  tasks: 
+  - name: Configurar Firewall
+    ansible.builtin.include_tasks:
+      file: tasks/firewall.yml
+      apply:
+        tags:
+          - firewall
+    tags: firewall
+          
+  - name: Instalacion de Dependencias
+    ansible.builtin.include_tasks:
+      file: tasks/dependencies.yml
+      apply:
+        tags:
+          - dependencies
+          - nginx
+          - php-fpm
+          - postgres
+    tags: 
+      - dependencies
+      - nginx
+      - php-fpm
+      - postgres
+
+#  - name: Install and prepare certbot
+#    ansible.builtin.include_tasks:
+#      file: tasks/certbot.yml
+#      apply:
+#        tags:
+#          - certbot
+#    tags: certbot
+
+  - name: Preparar Moodle directorios and codigo
+    ansible.builtin.include_tasks:
+      file: tasks/moodle.yml
+      apply:
+        tags: moodle
+    tags: moodle
+
+  - name: Configuracion Moodle cron job
+    ansible.builtin.include_tasks:
+      file: tasks/cron.yml
+      apply:
+        tags: cronjob
+    tags: cronjob
+
+  - name: Configurar Nginx webserver
+    ansible.builtin.include_tasks:
+      file: tasks/nginx.yml
+      apply:
+        tags: nginx
+    tags: nginx
+ 
+  - name: Configurar PHP-FPM
+    ansible.builtin.include_tasks:
+      file: tasks/php.yml  
+      apply:
+        tags: php-fpm
+    tags: php-fpm
+
+  - name: Configurar PostgreSQL
+    ansible.builtin.include_tasks:
+      file: tasks/postgres.yml
+      apply:
+        tags: postgres    
+    tags: postgres    
+    
+
