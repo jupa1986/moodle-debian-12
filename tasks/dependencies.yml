@@ -26,6 +26,7 @@
       - poppler-utils
       - postgresql
       - postgresql-contrib
+      - python3-psycopg2
     state: present
   tags:
   - installation

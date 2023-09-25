@@ -65,13 +65,13 @@
         tags: php-fpm
     tags: php-fpm
 
-#  - name: Configurar PostgreSQL
-#    ansible.builtin.include_tasks:
-#      file: tasks/postgres.yml
-#      apply:
-#        tags: postgres    
-#    tags: postgres
-#
+  - name: Configurar PostgreSQL
+    ansible.builtin.include_tasks:
+      file: tasks/postgres.yml
+      apply:
+        tags: postgres    
+    tags: postgres
+
   - name: Configurar plugins
     ansible.builtin.include_tasks:
       file: tasks/plugins.yml
