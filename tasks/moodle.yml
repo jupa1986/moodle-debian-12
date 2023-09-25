@@ -15,6 +15,10 @@
     owner: www-data
     group: www-data
     mode: "0700"
+- name: Delete moodle code folder
+  ansible.builtin.file:
+    state: absent
+    path: /srv/{{ moodle_dir }}/www/
 - name: Clone Moodle into /srv/{{ moodle_dir }}/www
   git:
     repo: https://github.com/moodle/moodle.git
