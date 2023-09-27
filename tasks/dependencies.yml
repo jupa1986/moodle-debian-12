@@ -1,5 +1,5 @@
 ---
-- name: Ansible apt install packages for LEPP
+- name: Instalacion de paquetes para php, nginx y postgres
   apt:
     name: 
       - htop

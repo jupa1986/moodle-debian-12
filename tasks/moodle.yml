@@ -1,16 +1,16 @@
 ---
-- name: Setup Moodle directory
+- name: Configuracion del Moodle directory
   file:
-    path: /srv/{{ moodle_dir }}
+    path: /srv/{{ app_name }}
     state: directory
     mode: "0755"
     owner: "{{ non_root_user }}"
     group: "{{ non_root_user }}"
 
 
-- name: Setup Moodledata directory /srv/{{ moodle_dir }}/moodledata
+- name: Configuracion del Moodledata directory /srv/{{ app_name }}/moodledata
   file:
-    path: /srv/{{ moodle_dir }}/moodledata
+    path: /srv/{{ app_name }}/moodledata
     state: directory
     owner: www-data
     group: www-data
@@ -18,26 +18,26 @@
 - name: Delete moodle code folder
   ansible.builtin.file:
     state: absent
-    path: /srv/{{ moodle_dir }}/www/
-- name: Clone Moodle into /srv/{{ moodle_dir }}/www
+    path: /srv/{{ app_name }}/www/
+- name: Clone Moodle en /srv/{{ app_name }}/www
   git:
     repo: https://github.com/moodle/moodle.git
-    dest: /srv/{{ moodle_dir }}/www/
+    dest: /srv/{{ app_name }}/www/
     clone: true
     version: "{{ moodle_git_branch }}"
     depth: 1
 
-- name: Recursively change ownership of Moodle directory
+- name: Cambiar el ownership recursivamente el directorio de Moodle
   file:
-    path: /srv/{{ moodle_dir }}/www
+    path: /srv/{{ app_name }}/www
     state: directory
     recurse: yes
     owner: www-data
     group: "{{ non_root_user }}"
 
-- name: Setup Moodle config.php
+- name: configurar config.php para moodle
   template:
-    dest: "/srv/{{ moodle_dir }}/www/config.php"
+    dest: "/srv/{{ app_name }}/www/config.php"
     mode: "0444"
     owner: www-data
     group: www-data

@@ -5,14 +5,14 @@
 #- name: Add Postgres Database
 #  command: sudo -u postgres createdb -O {{ db_user }} {{ db_name }}
 
-- name: "Create app database"
+- name: "Creacion de la base de datos"
   postgresql_db:
     state: present
     name: "{{ db_name }}"
   become: yes
   become_user: postgres
 
-- name: "Create db user"
+- name: "Creacion del usuario de la base de datos"
   postgresql_user:
     state: present
     name: "{{ db_user }}"
@@ -20,7 +20,7 @@
   become: yes
   become_user: postgres
 
-- name: "Grant db user access to app db"
+- name: "Dar acceso al usuairo a la base de datos"
   postgresql_privs:
     type: database
     database: "{{ db_name }}"
@@ -29,7 +29,7 @@
     privs: all
   become: yes
   become_user: postgres
-#- name: "Allow md5 connection for the db user"
+#- name: "Permitir acceso a la base de datos desde otro servidor"
 #  postgresql_pg_hba:
 #    dest: "/etc/postgresql/13/main/pg_hba.conf"
 #    contype: host

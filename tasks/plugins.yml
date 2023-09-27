@@ -2,14 +2,14 @@
 - name: Instalando plugin certificate
   git:
     repo: https://github.com/mdjnelson/moodle-mod_customcert.git
-    dest: "/srv/{{ moodle_dir }}/www/mod/customcert"
+    dest: "/srv/{{ app_name }}/www/mod/customcert"
     version: "{{ moodle_git_branch }}"
     clone: true
     depth: 1
 - name: Instalando plugin Zoom
   git:
     repo: https://github.com/ncstate-delta/moodle-mod_zoom.git
-    dest: "/srv/{{ moodle_dir }}/www/mod/zoom"
+    dest: "/srv/{{ app_name }}/www/mod/zoom"
     version: "main"
     clone: true
     depth: 1
@@ -17,7 +17,7 @@
 - name: Instalando theme
   git:
     repo: https://github.com/willianmano/moodle-theme_moove.git
-    dest: "/srv/{{ moodle_dir }}/www/theme/moove"
+    dest: "/srv/{{ app_name }}/www/theme/moove"
     version: "{{ moodle_git_branch }}"
     clone: true
     depth: 1
