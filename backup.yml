@@ -1,0 +1,45 @@
+---
+- hosts: all
+  become: yes
+
+  vars_files:
+  - vars.yml
+
+  tasks:
+  - name: "Capturando la fecha del backup"
+    set_fact:
+      now: '{{ lookup("pipe", "date +%F-%T") }}'
+
+  - name: "Creando un backup directory"
+    file:
+      path: "/var/lib/{{ app_name }}/backups/{{ now }}/"
+      mode: 0777
+      owner: "{{ non_root_user }}"
+      state: directory
+  - name: "Back up de la database"
+    postgresql_db:
+      state: dump
+      name: "{{ db_name }}"
+      target: "/var/lib/{{ app_name }}/backups/{{ now }}/{{ db_name }}.dump.gz"
+    become: yes
+    become_user: postgres
+
+  - name: "Copiar el backup de la base de datos del server a la carpeta backups/{{ now }} "
+    fetch:
+      src: "/var/lib/{{ app_name }}/backups/{{ now }}/{{ db_name }}.dump.gz"
+      dest: "backups/{{ now }}/{{ db_name }}.dump.gz"
+      flat: yes
+
+  
+  - name: "Creando un backup de la carpeta moodledata"
+    community.general.archive:
+      path: /srv/{{ app_name }}/moodledata/
+      dest: /var/lib/{{ app_name }}/backups/{{ now }}/moodledata.gz
+      format: gz
+      force_archive: true
+  
+  - name: "Copiar el backup de la carbeta moodledata a la carpeta backups/{{ now }}"
+    fetch:
+      src: "/var/lib/{{ app_name }}/backups/{{ now }}/moodledata.gz"
+      dest: "backups/{{ now }}/moodle_data.gz"
+      flat: yes  

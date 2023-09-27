@@ -1,0 +1,36 @@
+---
+- hosts: all
+  become: yes
+
+  vars_files:
+    - vars.yml
+  
+  vars_prompt:
+    - name: backup_name
+      prompt: Cual es el nombre del archivo de Backup?
+      private: false
+
+  tasks:
+    - name: "Create a backup directory"
+      file:
+        path: "/tmp/{{ app_name }}/backups/uploads/{{ backup_name | dirname }}"
+        mode: 0777
+        owner: "{{ non_root_user }}"
+        state: directory
+
+    - name: "Copy backup to the server"
+      copy:
+        src: "backups/{{ backup_name }}/"
+        dest: "/tmp/{{ app_name }}/backups/uploads/{{ backup_name }}"
+
+    - name: "Restore the database"
+      postgresql_db:
+        state: restore
+        name: "{{ db_name }}"
+        target: "/tmp/{{ app_name }}/backups/uploads/{{ backup_name }}/{{ db_name }}.dump.gz"
+      become: yes
+      become_user: postgres
+    - name: "Extract foo.tgz into /var/lib/foo"
+      unarchive:  
+        src: "/tmp/{{ app_name }}/backups/uploads/{{ backup_name }}/moodle_data.gz"
+        dest: "/srv/{{ app_name }}/moodledata"  
