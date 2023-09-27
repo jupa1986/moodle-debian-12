@@ -13,11 +13,26 @@
     version: "main"
     clone: true
     depth: 1
-
-- name: Instalando theme
+- name: Instalando plugin test email
   git:
-    repo: https://github.com/willianmano/moodle-theme_moove.git
-    dest: "/srv/{{ app_name }}/www/theme/moove"
-    version: "{{ moodle_git_branch }}"
+    repo: https://github.com/michael-milette/moodle-local_mailtest.git
+    dest: "/srv/{{ app_name }}/www/local/mailtest"
+    version: "master"
     clone: true
     depth: 1
+- name: Instalando plugin de reporte
+  git:
+    repo: https://github.com/ewallah/moodle-report_growth.git
+    dest: "/srv/{{ app_name }}/www/report/growth"
+    version: "main"
+    clone: true
+    depth: 1
+# No probdo en la version 4.2
+#- name: Instalando plugin jazzquiz 
+#  git:
+#    repo: https://github.com/KQMATH/moodle-mod_jazzquiz.git
+#    dest: "/srv/{{ app_name }}/www/mod/jazzquiz"
+#    version: "main"
+#    clone: true
+#    depth: 1
+
