@@ -72,11 +72,13 @@
         tags: postgres    
     tags: postgres
 
-  - name: Configurar plugins
+  - name: Instalacion plugins
     ansible.builtin.include_tasks:
       file: tasks/plugins.yml
       apply:
         tags: plugins
     tags: plugins    
-    
+  - name: Instalacion de theme
+    ansible.builtin.include_tasks:
+      file: tasks/theme.yml
 

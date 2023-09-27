@@ -1,0 +1,21 @@
+- name: Instalando theme
+  git:
+    repo: https://github.com/willianmano/moodle-theme_moove.git
+    dest: "/srv/{{ app_name }}/www/theme/moove"
+    version: "{{ moodle_git_branch }}"
+    clone: true
+    depth: 1  
+
+- name: "Colocando Copyright"
+  replace: 
+    path: "/srv/moodle/www/theme/moove/lang/en/theme_moove.php"
+    regexp:  'This theme was developed by'
+    replace: 'UIF 2023'
+    backup: no
+- name: "Quitando Imagen"
+  replace:
+    path: "/srv/moodle/www/theme/moove/templates/footer.mustache"
+    regexp: '40px;'
+    replace: '1px;'
+    backup: no
+
