@@ -10,6 +10,14 @@
     set_fact:
       now: '{{ lookup("pipe", "date +%F-%T") }}'
 
+  - name: Revisar espacio libre en /var
+    shell: df /var --output\=avail | tail -1
+    register: tmp_freespace
+      
+  - fail:
+      msg: /var no tiene el espacio minimo necesario  (3Gb). 
+    when: tmp_freespace.stdout|float is lt 3000000 
+
   - name: "Creando un backup directory"
     file:
       path: "/var/lib/{{ app_name }}/backups/{{ now }}/"
