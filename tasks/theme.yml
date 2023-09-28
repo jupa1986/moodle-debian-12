@@ -7,11 +7,10 @@
     depth: 1  
 
 - name: "Colocando Copyright"
-  replace: 
-    path: "/srv/{{ app_name }}/www/theme/moove/lang/en/theme_moove.php"
-    regexp:  'This theme was developed by'
-    replace: 'UIF 2023'
-    backup: no
+  ansible.builtin.lineinfile: 
+    path: "/srv/{{ app_name }}/www/theme/moove/templates/footer.mustache"
+    regexp:  'themedevelopedby'
+    line: '<p> UIF 2023 </p>'
 - name: "Quitando Imagen"
   replace:
     path: "/srv/{{ app_name }}/www/theme/moove/templates/footer.mustache"
